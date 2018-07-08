@@ -39,7 +39,12 @@ class Gateway extends AbstractGateway {
 			'accountId' => null,
 			'secondKey' => null,
 			'clientId' => null,
-			'clientSecret' => null
+			'clientSecret' => null,
+			'buyer' => null,
+			'notifyUrl' => null,
+			'description' => '',
+			'currency' => 'PLN',
+			'customerIp' => '127.0.0.1'
 		];
 	}
 	
@@ -140,13 +145,24 @@ class Gateway extends AbstractGateway {
 	
 	
 	/**
-	 * Get access token
+	 * Set buyer
 	 * 
-	 * @return string
+	 * @param \Omnipay\PayU\Buyer|null $buyer Buyer data
+	 * @return void
 	 */
-//	public function getAccessToken(): string {
-//		$this->getParameter('accessToken');
-//	}
+	public function setBuyer(?Buyer $buyer): void {
+		$this->setParameter('buyer', $buyer);
+	}
+	
+	
+	/**
+	 * Get buyer data
+	 * 
+	 * @return \Omnipay\PayU\Buyer|null
+	 */
+	public function getBuyer(): ?Buyer {
+		return $this->getParameter('buyer');
+	}
 	
 	
 	/**
@@ -159,6 +175,69 @@ class Gateway extends AbstractGateway {
 		$response = $request->send();
 		
 		return $response->getToken();
+	}
+	
+	
+	/**
+	 * URL that receive notifications
+	 * 
+	 * @param string $value Notify URL
+	 * @return void
+	 */
+	public function setNotifyUrl(string $value): void {
+		$this->setParameter('notifyUrl', $value);
+	}
+	
+	
+	/**
+	 * Get notify URL
+	 * 
+	 * @return string
+	 */
+	public function getNotifyUrl(): string {
+		return $this->getParameter('notifyUrl');
+	}
+	
+	
+	/**
+	 * Set order description
+	 * 
+	 * @param string $value Description
+	 * @return void
+	 */
+	public function setDescription(string $value): void {
+		$this->setParameter('description', $value);
+	}
+	
+	
+	/**
+	 * Get order description
+	 * 
+	 * @return string
+	 */
+	public function getDescription(): string {
+		return $this->getParameter('description');
+	}
+	
+	
+	/**
+	 * Set customer IP
+	 * 
+	 * @param string $customerIp Customer IP
+	 * @return void
+	 */
+	public function setCustomerIp(string $customerIp): void {
+		$this->setParameter('customerIp', $customerIp);
+	}
+	
+	
+	/**
+	 * Get customer IP
+	 * 
+	 * @return string
+	 */
+	public function getCustomerIp(): string {
+		return $this->getParameter('customerIp');
 	}
 
 	

@@ -2,6 +2,7 @@
 namespace Omnipay\PayU\Message;
 
 use Omnipay\Common\Message\AbstractRequest as AbstractOmnipayRequest;
+use Omnipay\PayU\Buyer;
 
 abstract class AbstractRequest extends AbstractOmnipayRequest {
 
@@ -21,7 +22,6 @@ abstract class AbstractRequest extends AbstractOmnipayRequest {
 	protected $testEndpoint = 'https://secure.snd.payu.com/';
 	
 	
-	
 	/**
 	 * Get default parameters
 	 * 
@@ -32,7 +32,11 @@ abstract class AbstractRequest extends AbstractOmnipayRequest {
 			'accountId' => null,
 			'secondKey' => null,
 			'clientId' => null,
-			'clientSecret' => null
+			'clientSecret' => null,
+			'buyer' => null,
+			'notifyUrl' => '',
+			'customerIp' => '127.0.0.1',
+			'description' => ''
 		];
 	}
 	
@@ -150,6 +154,50 @@ abstract class AbstractRequest extends AbstractOmnipayRequest {
 	 */
 	public function getAccessToken(): string {
 		$this->getParameter('accessToken');
+	}
+	
+	
+	
+	
+	/**
+	 * Set buyer
+	 * 
+	 * @param \Omnipay\PayU\Buyer|null $buyer Buyer data
+	 * @return void
+	 */
+	public function setBuyer(?Buyer $buyer): void {
+		$this->setParameter('buyer', $buyer);
+	}
+	
+	
+	/**
+	 * Get buyer data
+	 * 
+	 * @return \Omnipay\PayU\Buyer|null
+	 */
+	public function getBuyer(): ?Buyer {
+		return $this->getParameter('buyer');
+	}
+	
+	
+	/**
+	 * Set customer IP
+	 * 
+	 * @param string $customerIp Customer IP
+	 * @return void
+	 */
+	public function setCustomerIp(string $customerIp): void {
+		$this->setParameter('customerIp', $customerIp);
+	}
+	
+	
+	/**
+	 * Get customer IP
+	 * 
+	 * @return string
+	 */
+	public function getCustomerIp(): string {
+		return $this->getParameter('customerIp');
 	}
 	
 }

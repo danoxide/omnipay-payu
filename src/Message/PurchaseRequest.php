@@ -2,7 +2,6 @@
 namespace Omnipay\PayU\Message;
 
 use Omnipay\Common\Message\ResponseInterface;
-use GuzzleHttp\Client;
 
 /**
  * PayU purchase request
@@ -46,14 +45,63 @@ class PurchaseRequest extends AbstractRequest {
 	 * @param array $data
 	 * @return array
 	 */
-	public function getBody(array $data): array {
-		$total = 0;
-		$products = [];
+	public function getBody(): array {
+		$output = [
+			'totalAmount' => $this->getTotal(),
+			'notifyUrl' => $this->getParameter('notifyUrl'),
+			'customerIp' => $this->getParameter('customerIp'),
+			'merchantPosId' => $this->getParameter('accountId'),
+			'currencyCode' => $this->getParameter('currency'),
+			'description' => $this->getParameter('description'),
+			'settings' => [
+				'invoiceDisabled' => true
+			],
+			'products' => $this->getProducts()
+		];
 		
-		foreach($data['items'] as $item){
-			/* @var $item \Omnipay\Common\Item */
+		$buyer = $this->getParameter('buyer');
+		
+		if($buyer){
+			$output['buyer'] = [
+				'email' => $buyer->getEmail(),
+				'phone' => $buyer->getPhone(),
+				'firstName' => $buyer->getFirstName(),
+				'lastName' => $buyer->getLastName(),
+				'language' => $buyer->getLanguage()
+			];
+		}
+		
+		return $output;
+	}
+	
+	
+	/**
+	 * Get total price
+	 * 
+	 * @return int
+	 */
+	public function getTotal(): int {
+		$total = 0;
+		$items = $this->getParameter('items')->all();
+		
+		array_walk($items, function($item) use(&$total) {
 			$total += $item->getPrice() * $item->getQuantity();
-			
+		});
+		
+		return $total;
+	}
+	
+	
+	/**
+	 * Get products items
+	 * 
+	 * @return array
+	 */
+	public function getProducts(): array {
+		$products = [];
+		$items = $this->getParameter('items')->all();
+		
+		foreach($items as $item){
 			$products[] = [
 				'name' => $item->getName(),
 				'unitPrice' => $item->getPrice(),
@@ -61,25 +109,7 @@ class PurchaseRequest extends AbstractRequest {
 			];
 		}
 		
-		return [
-			'totalAmount' => $total,
-			'notifyUrl' => 'https://piotrfilipek.com.pl/',
-			'customerIp' => '127.0.0.1',
-			'merchantPosId' => $this->getParameter('accountId'),
-			'currencyCode' => 'PLN',
-			'description' => 'Opis zamówienia',
-			'settings' => [
-				'invoiceDisabled' => true
-			],
-			'products' => $products,
-			'buyer' => [
-				'email' => 'piotrek290@gmail.com',
-				'phone' => 555666999,
-				'firstName' => 'Piotr',
-				'lastName' => 'Filipek',
-				'language' => 'pl'
-			]
-		];
+		return $products;
 	}
 	
 	

@@ -17,7 +17,6 @@ class AccessTokenResponse extends AbstractResponse {
 	 * @return boolean
 	 */
 	public function isSuccessful(): bool {
-		$data = $this->getData();
 		return empty($data['error']);
 	}
 	

@@ -12,12 +12,22 @@ use Omnipay\Common\Message\AbstractResponse;
 class PurchaseResponse extends AbstractResponse {
 	
 	/**
+	 * @var string Success status
+	 */
+	protected const STATUS_SUCCESS = 'SUCCESS';
+	
+	
+	/**
 	 * Is token received successfuly
 	 * 
 	 * @return boolean
 	 */
 	public function isSuccessful(): bool {
-		return empty($data['error']);
+		if(isset($this->getData()['status']['statusCode']) && $this->getData()['status']['statusCode'] === self::STATUS_SUCCESS){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	
