@@ -1,0 +1,7 @@
+/.idea/
+composer.phar
+/vendor/
+.env
+.gitignore
+composer.lock
+index.php

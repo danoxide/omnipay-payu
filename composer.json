@@ -1,0 +1,10 @@
+{
+    "require": {
+        "league/omnipay": "^3",
+        "omnipay/paypal": "^3.0"
+    },
+    
+    "autoload": {
+        "psr-4": { "Omnipay\\PayU\\" : "src/" }
+    }
+}
