@@ -1,10 +1,23 @@
 {
+    "name" : "danoxide/omnipay-payu",
+    "description" : "PayU REST implementation for Omnipay 3.x",
+    "version" : "1.0.0-alpha",
+    "keywords" : [ "omnipay", "payu", "payment" ],
+    
+    "authors" : [
+        {
+            "name" : "Piotr Filipek",
+            "email" : "piotrek290@gmail.com",
+            "role" : "Developer"
+        }
+    ],
+    
     "require": {
-        "league/omnipay": "^3",
-        "omnipay/paypal": "^3.0"
+        "league/omnipay": "^3"
     },
     
     "autoload": {
         "psr-4": { "Omnipay\\PayU\\" : "src/" }
     }
+    
 }
